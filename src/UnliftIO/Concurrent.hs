@@ -33,7 +33,7 @@ import           System.Posix.Types (Fd)
 import           UnliftIO.Exception
 
 
-myThreadId :: MonadUnliftIO m => m ThreadId
+myThreadId :: MonadIO m => m ThreadId
 myThreadId = liftIO C.myThreadId
 {-# INLINABLE myThreadId #-}
 
@@ -47,7 +47,7 @@ forkFinally action and_then =
   mask $ \restore -> fork $ try (restore action) >>= and_then
 {-# INLINABLE forkFinally #-}
 
-killThread :: MonadUnliftIO m => ThreadId -> m ()
+killThread :: MonadIO m => ThreadId -> m ()
 killThread = liftIO . C.killThread
 
 forkOn :: MonadUnliftIO m => Int -> m () -> m ThreadId
@@ -55,37 +55,37 @@ forkOn n m = withRunInIO $ \run -> C.forkOn n (run m)
 {-# INLINABLE forkOn #-}
 
 -- | Generalized version of 'C.getNumCapabilities'.
-getNumCapabilities :: MonadUnliftIO m => m Int
+getNumCapabilities :: MonadIO m => m Int
 getNumCapabilities = liftIO C.getNumCapabilities
 {-# INLINABLE getNumCapabilities #-}
 
 -- | Generalized version of 'C.setNumCapabilities'.
-setNumCapabilities :: MonadUnliftIO m => Int -> m ()
+setNumCapabilities :: MonadIO m => Int -> m ()
 setNumCapabilities = liftIO . C.setNumCapabilities
 {-# INLINABLE setNumCapabilities #-}
 
 -- | Generalized version of 'C.threadCapability'.
-threadCapability :: MonadUnliftIO m => ThreadId -> m (Int, Bool)
+threadCapability :: MonadIO m => ThreadId -> m (Int, Bool)
 threadCapability = liftIO . C.threadCapability
 {-# INLINABLE threadCapability #-}
 
 -- | Generalized version of 'C.yield'.
-yield :: MonadUnliftIO m => m ()
+yield :: MonadIO m => m ()
 yield = liftIO C.yield
 {-# INLINABLE yield #-}
 
 -- | Generalized version of 'C.threadDelay'.
-threadDelay :: MonadUnliftIO m => Int -> m ()
+threadDelay :: MonadIO m => Int -> m ()
 threadDelay = liftIO .  C.threadDelay
 {-# INLINABLE threadDelay #-}
 
 -- | Generalized version of 'C.threadWaitRead'.
-threadWaitRead :: MonadUnliftIO m => Fd -> m ()
+threadWaitRead :: MonadIO m => Fd -> m ()
 threadWaitRead = liftIO . C.threadWaitRead
 {-# INLINABLE threadWaitRead #-}
 
 -- | Generalized version of 'C.threadWaitWrite'.
-threadWaitWrite :: MonadUnliftIO m => Fd -> m ()
+threadWaitWrite :: MonadIO m => Fd -> m ()
 threadWaitWrite = liftIO . C.threadWaitWrite
 {-# INLINABLE threadWaitWrite #-}
 
@@ -99,7 +99,7 @@ forkOS m = withRunInIO $ \run -> C.forkOS (run m)
 {-# INLINABLE forkOS #-}
 
 -- | Generalized version of 'C.isCurrentThreadBound'.
-isCurrentThreadBound :: MonadUnliftIO m => m Bool
+isCurrentThreadBound :: MonadIO m => m Bool
 isCurrentThreadBound = liftIO C.isCurrentThreadBound
 {-# INLINABLE isCurrentThreadBound #-}
 
@@ -114,6 +114,6 @@ runInUnboundThread m = withRunInIO $ \run -> C.runInUnboundThread (run m)
 {-# INLINABLE runInUnboundThread #-}
 
 -- | Generalized versio  of 'C.mkWeakThreadId'.
-mkWeakThreadId :: MonadUnliftIO m => ThreadId -> m (Weak ThreadId)
+mkWeakThreadId :: MonadIO m => ThreadId -> m (Weak ThreadId)
 mkWeakThreadId = liftIO . C.mkWeakThreadId
 {-# INLINABLE mkWeakThreadId #-}

@@ -9,11 +9,11 @@ import           Control.Concurrent.QSem (QSem)
 import qualified Control.Concurrent.QSem as QSem
 import           Control.Monad.IO.Unlift
 
-newQSem :: MonadUnliftIO m => Int -> m QSem
+newQSem :: MonadIO m => Int -> m QSem
 newQSem = liftIO . QSem.newQSem
 
-waitQSem :: MonadUnliftIO m => QSem -> m ()
+waitQSem :: MonadIO m => QSem -> m ()
 waitQSem = liftIO . QSem.waitQSem
 
-signalQSem :: MonadUnliftIO m => QSem -> m ()
+signalQSem :: MonadIO m => QSem -> m ()
 signalQSem = liftIO . QSem.signalQSem
